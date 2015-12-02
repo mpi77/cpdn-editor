@@ -1,2 +1,10 @@
-/cache/
-/config/development/
+!.gitignore
+!.htaccess
+.*
+*~
+/log/*
+/log
+/app/cache
+/app/cache/*
+/app/logs
+/app/logs/*
