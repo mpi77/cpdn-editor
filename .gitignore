@@ -8,3 +8,7 @@
 /app/cache/*
 /app/logs
 /app/logs/*
+/node_modules/*
+/bower_components/*
+/bower_components/
+/node_modules/

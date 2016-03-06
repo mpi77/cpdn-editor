@@ -1,0 +1,21 @@
+{
+  "name": "cpdn-editor",
+  "description": "CPDN Editor built in AngularJS",
+  "version": "0.0.1",
+  "homepage": "https://github.com/mpi77/cpdn-editor",
+  "license": "MIT",
+  "private": true,
+  "dependencies": {
+    "angular": "latest",
+    "angular-route": "latest",
+    "angular-loader": "latest",
+    "angular-mocks": "latest",
+    "html5-boilerplate": "latest",
+    "angular-bootstrap": "latest",
+    "bootstrap": "latest",
+    "angular-flash-alert": "latest",
+    "angular-loading-bar": "latest",
+    "angular-animate":"latest",
+    "vis":"latest"
+  }
+}
