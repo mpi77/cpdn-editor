@@ -1,0 +1,165 @@
+/* app css stylesheet */
+
+body {
+  padding-top: 50px;
+}
+
+#schematicNavbar{
+    background-color:#444; 
+    top:51px; 
+    z-index:900;
+}
+
+#schematicNavbar li{
+    font-size: 25px;
+}
+
+#schematicNavbar li a{
+    padding: 12px 15px;
+}
+
+#schematicNavbar ul.dropdown-menu li{
+    font-size: 14px;
+}
+
+flash-message{
+    position: fixed;
+    z-index: 10000;
+    top: 51px;
+    left: 50%;
+    width: 75%;
+    margin-left: -37.5%;
+}
+
+vis-network {
+  position: fixed;
+  top: 102px;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: #f5f5f5;
+}
+
+.vis-navigation{
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    z-index: 950;
+}
+
+.vis-up, .vis-down, .vis-left, .vis-right{
+    bottom: 0;
+    left: 0;
+    position: fixed;
+}
+
+.vis-zoomIn, .vis-zoomOut, .vis-zoomExtends{
+    bottom: 0;
+    right: 0;
+    position: fixed;
+}
+
+.maps-schematic-info{
+    padding: 10px;
+}
+
+.cpdn-heading .left{
+    padding-right: 10px;
+}
+
+.cpdn-heading .right{
+    padding-left: 25px;
+}
+
+.cpdn-heading .elm-right, .cpdn-heading .tsk-right{
+    padding-left: 20px;
+}
+
+.paginator{
+    text-align: center;
+}
+
+.form-signin {
+  max-width: 330px;
+  padding: 15px;
+  margin: 0 auto;
+}
+
+.form-signin .form-signin-heading {
+  margin-bottom: 10px;
+}
+
+.form-signin .form-control {
+  position: relative;
+  height: auto;
+  -webkit-box-sizing: border-box;
+     -moz-box-sizing: border-box;
+          box-sizing: border-box;
+  padding: 10px;
+  font-size: 16px;
+}
+.form-signin .form-control:focus {
+  z-index: 2;
+}
+
+#schemesTbl .col-0{ width: 10%;}
+#schemesTbl .col-1{ width: 25%;}
+#schemesTbl .col-2{ width: 30%;}
+#schemesTbl .col-3{ width: 10%;}
+#schemesTbl .col-4{ width: 10%;}
+#schemesTbl .col-5{ width: 15%;}
+
+#nodesTbl .col-0{ width: 10%;}
+#nodesTbl .col-1{ width: 15%;}
+#nodesTbl .col-2{ width: 30%;}
+#nodesTbl .col-3{ width: 10%;}
+#nodesTbl .col-4{ width: 10%;}
+#nodesTbl .col-5{ width: 10%;}
+#nodesTbl .col-6{ width: 15%;}
+
+#sectionsTbl .col-0{ width: 10%;}
+#sectionsTbl .col-1{ width: 15%;}
+#sectionsTbl .col-2{ width: 25%;}
+#sectionsTbl .col-3{ width: 15%;}
+#sectionsTbl .col-4{ width: 15%;}
+#sectionsTbl .col-5{ width: 10%;}
+#sectionsTbl .col-6{ width: 10%;}
+
+#objectsTbl .col-0{ width: 10%;}
+#objectsTbl .col-1{ width: 75%;}
+#objectsTbl .col-2{ width: 15%;}
+
+#pointsTbl .col-0{ width: 15%;}
+#pointsTbl .col-1{ width: 15%;}
+#pointsTbl .col-2{ width: 15%;}
+#pointsTbl .col-3{ width: 15%;}
+#pointsTbl .col-4{ width: 15%;}
+#pointsTbl .col-5{ width: 15%;}
+#pointsTbl .col-6{ width: 10%;}
+
+#usersTbl .col-0{ width: 20%;}
+#usersTbl .col-1{ width: 20%;}
+#usersTbl .col-2{ width: 20%;}
+#usersTbl .col-3{ width: 20%;}
+#usersTbl .col-4{ width: 20%;}
+
+#executorsTbl .col-0{ width: 20%;}
+#executorsTbl .col-1{ width: 45%;}
+#executorsTbl .col-2{ width: 10%;}
+#executorsTbl .col-3{ width: 25%;}
+
+#tasksTbl .col-0{ width: 10%;}
+#tasksTbl .col-1{ width: 20%;}
+#tasksTbl .col-2{ width: 20%;}
+#tasksTbl .col-3{ width: 20%;}
+#tasksTbl .col-4{ width: 10%;}
+#tasksTbl .col-5{ width: 10%;}
+#tasksTbl .col-6{ width: 10%;}
+
+#permissionsTbl .col-0{ width: 40%;}
+#permissionsTbl .col-1{ width: 10%;}
+#permissionsTbl .col-2{ width: 20%;}
+#permissionsTbl .col-3{ width: 20%;}
+#permissionsTbl .col-4{ width: 10%;}
+
