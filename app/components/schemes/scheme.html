@@ -1,0 +1,51 @@
+<h2 class="cpdn-heading">
+	<div class="btn-group left" role="group">
+		<button type="button" class="btn btn-default" ng-click="back()">
+			<i class="fa fa-chevron-left"></i>
+		</button>
+	</div>
+	Scheme {{ schemeBoxTitle }}
+</h2>
+
+<div class="row">
+<div class="col-md-4"></div>
+<div class="col-md-4">
+	<form method="post" role="form" name="schemeForm" ng-submit="submit()">
+	    <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title">{{ userBoxTitle }}</h3>
+            </div>
+            <div class="panel-body">
+                <div class="form-group" ng-class="schemeForm.schemeName.$valid ? 'has-success' : 'has-error'">
+					<label class="control-label" for="schemeName">Name</label>
+				    <input type="text" id="schemeName" name="schemeName" value="" class="form-control" placeholder="Name" ng-model="scheme.name" ng-pattern="/^[a-zA-Z0-9_\/\.\-]{1,45}$/" required autofocus />
+				</div>
+				<div class="form-group" ng-class="schemeForm.schemeDescription.$valid ? 'has-success' : 'has-error'">
+					<label class="control-label" for="schemeDescription">Description</label>
+		            <textarea class="form-control" rows="5" id="schemeDescription" name="schemeDescription" placeholder="Description" ng-model="scheme.description" ng-pattern="/^[\s\S]*$/"></textarea>
+				</div>
+				<div class="form-group" ng-class="schemeForm.schemeVersion.$valid ? 'has-success' : 'has-error'">
+					<label class="control-label" for="schemeVersion">Version</label>
+		            <input type="number" id="schemeVersion" name="schemeVersion" value="" class="form-control" placeholder="Version" ng-model="scheme.version" ng-pattern="/^[1-9][0-9]{0,9}$/" required />
+				</div>
+				<div class="form-group" ng-class="schemeForm.schemeLock.$valid ? 'has-success' : 'has-error'">
+					<label class="control-label" for="schemeLock">
+					    Lock
+					    <input type="checkbox" ng-model="scheme.lock" name="schemeLock" ng-pattern="/^(true|false)$/" reguired>
+					</label>
+				</div>
+            </div>
+            <div class="panel-footer">
+                <div class="row">
+                    <div class="col-md-12">
+                        <a href="" class="btn btn-default  pull-left" ng-click="cancel()"><i class="fa fa-times"></i>&nbsp;&nbsp;Cancel</a>
+			            <button type="submit" class="btn btn-primary pull-right" ng-disabled='!schemeForm.$valid'><i class="fa fa-arrow-circle-right"></i>&nbsp;Send</button>
+			        </div>
+			    </div>
+            </div>
+        </div>
+	</form>
+</div>
+<div class="col-md-4"></div>
+</div>
+
