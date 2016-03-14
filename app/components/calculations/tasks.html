@@ -1,0 +1,104 @@
+<h2 class="cpdn-heading">
+	<div class="btn-group left" role="group">
+		<button type="button" class="btn btn-default" ng-click="back()">
+			<i class="fa fa-chevron-left"></i>
+		</button>
+	</div>
+	Tasks
+	<div class="btn-group right" role="group">
+	    <button type="button" class="btn btn-success" ng-click="create()"><i class="fa fa-plus"></i></button>
+		<button type="button" class="btn btn-primary" ng-click="refresh()"><i class="fa fa-refresh"></i></button>
+	</div>
+	<div class="btn-group tsk-right" role="group">
+		<button type="button" class="btn btn-default" ng-click="setTaskScope('my')" ng-class="(config.taskScope == 'my') ? 'active' : ''"><i class="fa fa-user"></i>&nbsp;My tasks</button>
+		<button type="button" class="btn btn-default" ng-click="setTaskScope('all')" ng-class="(config.taskScope == 'all') ? 'active' : ''"><i class="fa fa-group"></i>&nbsp;All tasks</button>
+	</div>
+	<div class="btn-group tsk-right" role="group">
+	    <button type="button" class="btn btn-default" ng-click="setTaskStatus('all')" ng-class="(config.taskStatus == 'all') ? 'active' : ''">All</button>
+		<button type="button" class="btn btn-default" ng-click="setTaskStatus('preparing')" ng-class="(config.taskStatus == 'preparing') ? 'active' : ''"><i class="fa fa-sliders"></i>&nbsp;Preparing</button>
+		<button type="button" class="btn btn-default" ng-click="setTaskStatus('new')" ng-class="(config.taskStatus == 'new') ? 'active' : ''"><i class="fa fa-lock"></i>&nbsp;New</button>
+		<button type="button" class="btn btn-default" ng-click="setTaskStatus('working')" ng-class="(config.taskStatus == 'working') ? 'active' : ''"><i class="fa fa-spinner"></i>&nbsp;Working</button>
+		<button type="button" class="btn btn-default" ng-click="setTaskStatus('complete')" ng-class="(config.taskStatus == 'complete') ? 'active' : ''"><i class="fa fa-check"></i>&nbsp;Complete</button>
+	</div>
+	<div class="pull-right">
+	    <select class="form-control" required autofocus ng-model="paginator.size" ng-options="ps.label for ps in paginator.pageSizes | orderBy:'value'" ng-change="refresh()">
+        </select>
+	</div>
+</h2>
+
+<table class="table table-striped" id="tasksTbl">
+	<thead>
+      <tr>
+		<th>
+		    <a href="" ng-click="sort.column = 'id'; sort.reverse = !sort.reverse">
+                ID 
+                <i class="fa fa-sort-desc" ng-show="sort.column == 'id' && !sort.reverse"></i>
+                <i class="fa fa-sort-asc" ng-show="sort.column == 'id' && sort.reverse"></i>
+            </a>
+		</th>
+		<th>
+		    <a href="" ng-click="sort.column = 'scheme'; sort.reverse = !sort.reverse">
+                Scheme
+                <i class="fa fa-sort-desc" ng-show="sort.column == 'scheme' && !sort.reverse"></i>
+                <i class="fa fa-sort-asc" ng-show="sort.column == 'scheme' && sort.reverse"></i>
+            </a>
+		</th>
+		<th>
+		    <a href="" ng-click="sort.column = 'executor'; sort.reverse = !sort.reverse">
+                Executor
+                <i class="fa fa-sort-desc" ng-show="sort.column == 'executor' && !sort.reverse"></i>
+                <i class="fa fa-sort-asc" ng-show="sort.column == 'executor' && sort.reverse"></i>
+            </a>
+		</th>
+		<th>
+		    <a href="" ng-click="sort.column = 'user'; sort.reverse = !sort.reverse">
+                User
+                <i class="fa fa-sort-desc" ng-show="sort.column == 'user' && !sort.reverse"></i>
+                <i class="fa fa-sort-asc" ng-show="sort.column == 'user' && sort.reverse"></i>
+            </a>
+		</th>
+		<th>
+		    <a href="" ng-click="sort.column = 'priority'; sort.reverse = !sort.reverse">
+                Priority
+                <i class="fa fa-sort-desc" ng-show="sort.column == 'priority' && !sort.reverse"></i>
+                <i class="fa fa-sort-asc" ng-show="sort.column == 'priority' && sort.reverse"></i>
+            </a>
+		</th>
+		<th>
+		    <a href="" ng-click="sort.column = 'status'; sort.reverse = !sort.reverse">
+                Status
+                <i class="fa fa-sort-desc" ng-show="sort.column == 'status' && !sort.reverse"></i>
+                <i class="fa fa-sort-asc" ng-show="sort.column == 'status' && sort.reverse"></i>
+            </a>
+		</th>
+		<th>&nbsp;</th>
+	</tr>
+    </thead>
+    <tbody>
+		<tr ng-repeat="row in tasks | orderBy:sort.column:sort.reverse">
+	    	<td class="col-0">{{ row.id }}</td>
+	    	<td class="col-1">{{ row.scheme }}</td>
+	    	<td class="col-2">{{ row.executor }}</td>
+	    	<td class="col-3">{{ row.user }}</td>
+	    	<td class="col-4">{{ row.priority }}</td>
+	    	<td class="col-5"><span class="label label-default" ng-if="row.status == 'preparing'" title="Preparing"><i class="fa fa-sliders"></i></span><span class="label label-info" ng-if="row.status == 'new'" title="New in stack"><i class="fa fa-lock"></i></span><span class="label label-warning" ng-if="row.status == 'working'" title="Executor is working"><i class="fa fa-spinner"></i></span><span class="label label-success" ng-if="row.status == 'complete'" title="Complete"><i class="fa fa-check"></i></span></td>
+	    	<td class="col-6">
+				<button type="button" class="btn btn-default btn-sm pull-right" aria-label="Open" ng-click="edit(row.id)">
+	  				<i class="fa fa-pencil"></i>
+				</button>
+	    	</td>
+	  	</tr>
+  	</tbody>
+</table>
+
+<nav class="paginator">
+  <ul class="pagination">
+    <li>
+      <a href="" aria-label="Previous" ng-click="setPage(1)"><i class="fa fa-step-backward"></i></a>
+    </li>
+    <li ng-repeat="x in paginator.totalPagesArray" ng-class="x == paginator.page ? 'active' : ''"><a href="" ng-click="setPage(x)">{{ x }}</a></li>
+    <li>
+      <a href="" aria-label="Last" ng-click="setPage(paginator.totalPages)"><i class="fa fa-step-forward"></i></a>
+    </li>
+  </ul>
+</nav>

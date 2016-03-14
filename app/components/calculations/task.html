@@ -1,0 +1,80 @@
+<h2 class="cpdn-heading">
+	<div class="btn-group left" role="group">
+		<button type="button" class="btn btn-default" ng-click="back()">
+			<i class="fa fa-chevron-left"></i>
+		</button>
+	</div>
+	Task {{ taskBoxTitle }}
+	<div class="btn-group right" role="group">
+		<button type="button" class="btn btn-primary" ng-click="refresh()"><i class="fa fa-refresh"></i></button>
+	</div>
+</h2>
+
+<div class="row">
+<div class="col-md-4"></div>
+<div class="col-md-4">
+	<form method="post" role="form" name="taskForm" ng-submit="submit()">
+	    <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title">{{ userBoxTitle }}</h3>
+            </div>
+            <div class="panel-body">
+                <div class="form-group">
+                    <label class="control-label">Scheme</label>
+		            <select class="form-control" required autofocus ng-model="selectedScheme" ng-options="scheme.label for scheme in schemes | orderBy:'label'" ng-disabled="!config.isViewEnabled"><option value="">-- choose scheme --</option></select>
+                </div>
+                <div class="form-group">
+                    <label class="control-label">Executor</label>
+		            <select class="form-control" required autofocus ng-model="selectedExecutor" ng-options="executor.label for executor in executors | orderBy:'label'" ng-disabled="!config.isViewEnabled"><option value="">-- choose executor --</option></select>
+                </div>
+                <div class="form-group">
+                    <label class="control-label">Calculation method</label>
+		            <select class="form-control" required autofocus ng-model="selectedMethod" ng-options="method.label for method in methods | orderBy:'label'" ng-disabled="!config.isViewEnabled"><option value="">-- choose method --</option></select>
+                </div>
+                <div class="form-group" ng-disabled="true">
+					<label class="control-label" for="taskStatus">Status</label>
+		            <input type="text" id="taskStatus" name="taskStatus" value="" class="form-control" placeholder="Status" ng-model="task.status" ng-pattern="/^(preparing|new|working|complete)$/" ng-disabled="true" />
+				</div>
+				<div class="form-group" ng-class="(config.isPreparing) ? (taskForm.taskPriority.$valid ? 'has-success' : 'has-error') : ''">
+					<label class="control-label" for="taskPriority">Priority</label>
+		            <input type="number" id="taskPriority" name="taskPriority" value="" class="form-control" placeholder="Priority" ng-model="task.priority" ng-pattern="/^[1-9][0-9]{0,9}$/" ng-disabled="!config.isViewEnabled" required autofocus />
+				</div>
+            </div>
+            <div class="panel-footer">
+                <div class="row">
+                    <div class="col-md-12">
+                        <a href="" class="btn btn-default  pull-left" ng-click="cancel()"><i class="fa fa-times"></i>&nbsp;&nbsp;Cancel</a>
+			            <button type="submit" class="btn btn-primary pull-right" ng-show="config.isViewEnabled" ng-disabled="!(taskForm.$valid && config.isViewEnabled)"><i class="fa fa-arrow-circle-right"></i>&nbsp;Send</button>
+			        </div>
+			    </div>
+            </div>
+        </div>
+	</form>
+</div>
+<div class="col-md-4"></div>
+</div>
+
+<div class="row" ng-show="!config.isViewEnabled && task._meta.id > 0 && task.status == 'preparing'">
+<div class="col-md-4"></div>
+<div class="col-md-4">
+	<form method="post" role="form" name="taskConfirmForm" ng-submit="confirm()">
+	    <div class="panel panel-danger">
+            <div class="panel-heading">
+                <h3 class="panel-title">Confirm execution</h3>
+            </div>
+            <div class="panel-body">
+                I agree with pushing this task into calculation stack.
+            </div>
+            <div class="panel-footer">
+                <div class="row">
+                    <div class="col-md-12">
+                        <a href="" class="btn btn-default  pull-left" ng-click="cancel()"><i class="fa fa-times"></i>&nbsp;&nbsp;Cancel</a>
+			            <button type="submit" class="btn btn-danger pull-right"><i class="fa fa-arrow-circle-right"></i>&nbsp;Confirm</button>
+			        </div>
+			    </div>
+            </div>
+        </div>
+	</form>
+</div>
+<div class="col-md-4"></div>
+</div>

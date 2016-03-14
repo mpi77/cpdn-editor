@@ -1,0 +1,70 @@
+<h2 class="cpdn-heading">
+	<div class="btn-group left" role="group">
+		<button type="button" class="btn btn-default" ng-click="back()">
+			<i class="fa fa-chevron-left"></i>
+		</button>
+	</div>
+	Executors
+	<div class="btn-group right" role="group">
+		<button type="button" class="btn btn-primary" ng-click="refresh()"><i class="fa fa-refresh"></i></button>
+	</div>
+	<div class="pull-right">
+	    <select class="form-control" required autofocus ng-model="paginator.size" ng-options="ps.label for ps in paginator.pageSizes | orderBy:'value'" ng-change="refresh()">
+        </select>
+	</div>
+</h2>
+
+<table class="table table-striped" id="executorsTbl">
+	<thead>
+      <tr>
+		<th>
+		    <a href="" ng-click="sort.column = 'id'; sort.reverse = !sort.reverse">
+                ID 
+                <i class="fa fa-sort-desc" ng-show="sort.column == 'id' && !sort.reverse"></i>
+                <i class="fa fa-sort-asc" ng-show="sort.column == 'id' && sort.reverse"></i>
+            </a>
+		</th>
+		<th>
+		    <a href="" ng-click="sort.column = 'title'; sort.reverse = !sort.reverse">
+                Name
+                <i class="fa fa-sort-desc" ng-show="sort.column == 'title' && !sort.reverse"></i>
+                <i class="fa fa-sort-asc" ng-show="sort.column == 'title' && sort.reverse"></i>
+            </a>
+		</th>
+		<th>
+		    <a href="" ng-click="sort.column = 'status'; sort.reverse = !sort.reverse">
+                Status
+                <i class="fa fa-sort-desc" ng-show="sort.column == 'status' && !sort.reverse"></i>
+                <i class="fa fa-sort-asc" ng-show="sort.column == 'status' && sort.reverse"></i>
+            </a>
+		</th>
+		<th>
+		    <a href="" ng-click="sort.column = 'tsUpdate'; sort.reverse = !sort.reverse">
+                Last status change
+                <i class="fa fa-sort-desc" ng-show="sort.column == 'tsUpdate' && !sort.reverse"></i>
+                <i class="fa fa-sort-asc" ng-show="sort.column == 'tsUpdate' && sort.reverse"></i>
+            </a>
+		</th>
+	</tr>
+    </thead>
+    <tbody>
+		<tr ng-repeat="row in executors | orderBy:sort.column:sort.reverse">
+	    	<td class="col-0">{{ row.id }}</td>
+	    	<td class="col-1">{{ row.title }}</td>
+	    	<td class="col-2"><span class="label label-success" ng-if="row.status == 'online'" title="Online"><i class="fa fa-spinner"></i></span><span class="label label-default" ng-if="row.status == 'offline'" title="Offline"><i class="fa fa-power-off"></i></span></td>
+	    	<td class="col-3">{{ row.tsUpdate }}</td>
+	  	</tr>
+  	</tbody>
+</table>
+
+<nav class="paginator">
+  <ul class="pagination">
+    <li>
+      <a href="" aria-label="Previous" ng-click="setPage(1)"><i class="fa fa-step-backward"></i></a>
+    </li>
+    <li ng-repeat="x in paginator.totalPagesArray" ng-class="x == paginator.page ? 'active' : ''"><a href="" ng-click="setPage(x)">{{ x }}</a></li>
+    <li>
+      <a href="" aria-label="Last" ng-click="setPage(paginator.totalPages)"><i class="fa fa-step-forward"></i></a>
+    </li>
+  </ul>
+</nav>
