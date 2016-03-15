@@ -1,0 +1,102 @@
+<h2 class="cpdn-heading">
+	<div class="btn-group left" role="group">
+		<button type="button" class="btn btn-default" ng-click="back()">
+			<i class="fa fa-chevron-left"></i>
+		</button>
+	</div>
+	{{ scheme.name }}&nbsp;<small><i class="fa fa-home"></i>&nbsp;OBJECTS</small>
+	<div class="btn-group right" role="group">
+		<button type="button" class="btn btn-success" ng-click="create()"><i class="fa fa-plus"></i></button>
+		<button type="button" class="btn btn-warning" ng-click="showSchematicMap()"><i class="fa fa-map"></i></button>
+		<button type="button" class="btn btn-info" ng-click="showSchemeInfo()"><i class="fa fa-info"></i></button>
+		<button type="button" class="btn btn-primary" ng-click="refresh()"><i class="fa fa-refresh"></i></button>
+	</div>
+	<div class="btn-group elm-right" role="group">
+		<button type="button" class="btn btn-default" ng-click="showScheme('points')" title="Points"><i class="fa fa-map-pin"></i></button>
+		<button type="button" class="btn btn-default" ng-click="showScheme('nodes')" title="Nodes"><i class="fa fa-dot-circle-o"></i></button>
+		<button type="button" class="btn btn-default" ng-click="showScheme('sections')" title="Sections"><i class="fa fa-arrows-h"></i></button>
+		<button type="button" class="btn btn-default" ng-click="showScheme('objects')" title="Objects"><i class="fa fa-home"></i></button>
+	</div>
+	<div class="pull-right">
+	    <select class="form-control" required autofocus ng-model="paginator.size" ng-options="ps.label for ps in paginator.pageSizes | orderBy:'value'" ng-change="refresh()">
+        </select>
+	</div>
+</h2>
+
+<div class="panel panel-default" ng-if="config.showSchemeInfo">
+    <div class="panel-heading">Scheme info</div>
+    <div class="panel-body">
+	    <div class="col-xs-12 col-sm-12 col-md-12">
+			<div class="col-xs-6 col-sm-4 col-md-4">ID</div>
+		  	<div class="col-xs-6 col-sm-8 col-md-8"><b>{{ scheme.id }}</b></div>
+		</div>
+		<div class="col-xs-12 col-sm-12 col-md-12">
+			<div class="col-xs-6 col-sm-4 col-md-4">Name</div>
+		  	<div class="col-xs-6 col-sm-8 col-md-8"><b>{{ scheme.name }}</b></div>
+		</div>
+		<div class="col-xs-12 col-sm-12 col-md-12">
+			<div class="col-xs-6 col-sm-4 col-md-4">Description</div>
+		  	<div class="col-xs-6 col-sm-8 col-md-8"><b>{{ scheme.description }}</b></div>
+		</div>
+		<div class="col-xs-12 col-sm-12 col-md-12">
+			<div class="col-xs-6 col-sm-4 col-md-4">Version</div>
+		  	<div class="col-xs-6 col-sm-8 col-md-8"><b>{{ scheme.version }}</b></div>
+		</div>
+		<div class="col-xs-12 col-sm-12 col-md-12">
+			<div class="col-xs-6 col-sm-4 col-md-4">Lock</div>
+		  	<div class="col-xs-6 col-sm-8 col-md-8"><b ng-if="scheme.lock">yes</b><b ng-if="!scheme.lock">no</b></div>
+		</div>
+		<div class="col-xs-12 col-sm-12 col-md-12">
+			<div class="col-xs-6 col-sm-4 col-md-4">Has W permission</div>
+		  	<div class="col-xs-6 col-sm-8 col-md-8"><b ng-if="scheme.isWritable">yes</b><b ng-if="!scheme.isWritable">no</b></div>
+		</div>
+  </div>
+</div>
+
+<table class="table table-striped" id="objectsTbl">
+	<thead>
+      <tr>
+		<th>
+		    <a href="" ng-click="sort.column = 'id'; sort.reverse = !sort.reverse">
+                ID 
+                <i class="fa fa-sort-desc" ng-show="sort.column == 'id' && !sort.reverse"></i>
+                <i class="fa fa-sort-asc" ng-show="sort.column == 'id' && sort.reverse"></i>
+            </a>
+		</th>
+		<th>
+		    <a href="" ng-click="sort.column = 'name'; sort.reverse = !sort.reverse">
+                Name 
+                <i class="fa fa-sort-desc" ng-show="sort.column == 'name' && !sort.reverse"></i>
+                <i class="fa fa-sort-asc" ng-show="sort.column == 'name' && sort.reverse"></i>
+            </a>
+		</th>
+        <th>&nbsp;</th>
+	</tr>
+    </thead>
+    <tbody>
+		<tr ng-repeat="row in objects | orderBy:sort.column:sort.reverse">
+	    	<td class="col-0">{{ row.id }}</td>
+	    	<td class="col-1">{{ row.name }}</td>
+	    	<td class="col-2">
+	    		<button type="button" class="btn btn-default btn-sm pull-right" ng-if="scheme.isWritable && !scheme.lock" aria-label="Delete" ng-click="delete(row.id)">
+	  				<i class="fa fa-trash"></i>
+				</button>
+				<button type="button" class="btn btn-default btn-sm pull-right" ng-if="scheme.isWritable" aria-label="Open" ng-click="edit(row.id)">
+	  				<i class="fa fa-pencil"></i>
+				</button>
+	    	</td>
+	  	</tr>
+  	</tbody>
+</table>
+
+<nav class="paginator">
+  <ul class="pagination">
+    <li>
+      <a href="" aria-label="Previous" ng-click="setPage(1)"><i class="fa fa-step-backward"></i></a>
+    </li>
+    <li ng-repeat="x in paginator.totalPagesArray" ng-class="x == paginator.page ? 'active' : ''"><a href="" ng-click="setPage(x)">{{ x }}</a></li>
+    <li>
+      <a href="" aria-label="Last" ng-click="setPage(paginator.totalPages)"><i class="fa fa-step-forward"></i></a>
+    </li>
+  </ul>
+</nav>

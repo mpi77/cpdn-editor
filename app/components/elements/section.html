@@ -1,0 +1,402 @@
+<h2 class="cpdn-heading">
+	<div class="btn-group left" role="group">
+		<button type="button" class="btn btn-default" ng-click="back()">
+			<i class="fa fa-chevron-left"></i>
+		</button>
+	</div>
+	Section {{ sectionBoxTitle }}
+	<div class="btn-group right" role="group">
+		<button type="button" class="btn btn-info" ng-click="showSchemeInfo()"><i class="fa fa-info"></i></button>
+		<button type="button" class="btn btn-primary" ng-click="refresh()"><i class="fa fa-refresh"></i></button>
+	</div>
+</h2>
+
+<div class="panel panel-default" ng-if="config.showSchemeInfo">
+    <div class="panel-heading">Scheme info</div>
+    <div class="panel-body">
+	    <div class="col-xs-12 col-sm-12 col-md-12">
+			<div class="col-xs-6 col-sm-4 col-md-4">ID</div>
+		  	<div class="col-xs-6 col-sm-8 col-md-8"><b>{{ scheme.id }}</b></div>
+		</div>
+		<div class="col-xs-12 col-sm-12 col-md-12">
+			<div class="col-xs-6 col-sm-4 col-md-4">Name</div>
+		  	<div class="col-xs-6 col-sm-8 col-md-8"><b>{{ scheme.name }}</b></div>
+		</div>
+		<div class="col-xs-12 col-sm-12 col-md-12">
+			<div class="col-xs-6 col-sm-4 col-md-4">Description</div>
+		  	<div class="col-xs-6 col-sm-8 col-md-8"><b>{{ scheme.description }}</b></div>
+		</div>
+		<div class="col-xs-12 col-sm-12 col-md-12">
+			<div class="col-xs-6 col-sm-4 col-md-4">Version</div>
+		  	<div class="col-xs-6 col-sm-8 col-md-8"><b>{{ scheme.version }}</b></div>
+		</div>
+		<div class="col-xs-12 col-sm-12 col-md-12">
+			<div class="col-xs-6 col-sm-4 col-md-4">Lock</div>
+		  	<div class="col-xs-6 col-sm-8 col-md-8"><b ng-if="scheme.lock">yes</b><b ng-if="!scheme.lock">no</b></div>
+		</div>
+		<div class="col-xs-12 col-sm-12 col-md-12">
+			<div class="col-xs-6 col-sm-4 col-md-4">Has W permission</div>
+		  	<div class="col-xs-6 col-sm-8 col-md-8"><b ng-if="scheme.isWritable">yes</b><b ng-if="!scheme.isWritable">no</b></div>
+		</div>
+  </div>
+</div>
+
+<form method="post" role="form" name="sectionForm" ng-submit="submit()">
+<div class="col-md-6">
+    <div class="panel panel-default">
+        <div class="panel-heading">Specification / General</div>
+        <div class="panel-body">
+            <div class="row">
+			    <div class="col-xs-6 col-sm-6 col-md-6">
+			        <label class="control-label">Type</label>
+			        <select class="form-control" required autofocus ng-model="selectedSectionType" ng-options="type.label for type in sectionTypes | orderBy:'label'" ng-disabled="scheme.lock"></select>
+			    </div>
+		      	<div class="col-xs-6 col-sm-6 col-md-6">
+		            <div class="form-group" ng-class="(!scheme.lock) ? (sectionForm.sectionLabel.$valid ? 'has-success' : 'has-error') : ''">
+				        <label class="control-label" for="sectionLabel">Label</label>
+				        <input type="text" id="sectionLabel" name="sectionLabel" value="" class="form-control" placeholder="Label" ng-model="section.spec.label" ng-pattern="/^$|^([a-zA-Z0-9_\/\.\-]{1,255})$/" ng-disabled="scheme.lock" autofocus required />
+			        </div>
+		      	</div>
+		    </div>
+		    
+		     <div class="row">
+			    <div class="col-xs-6 col-sm-6 col-md-6">
+			        <label class="control-label">Source node</label>
+			        <select class="form-control" required autofocus ng-model="selectedNodes.src" ng-options="node.label for node in nodes | orderBy:'label'" ng-disabled="scheme.lock"><option value="">-- choose node --</option></select>
+			    </div>
+		      	<div class="col-xs-6 col-sm-6 col-md-6">
+		            <label class="control-label">Destination node</label>
+			        <select class="form-control" required autofocus ng-model="selectedNodes.dst" ng-options="node.label for node in nodes | orderBy:'label'" ng-disabled="scheme.lock"><option value="">-- choose node --</option></select>
+		      	</div>
+		    </div>
+		    
+		    <div class="row">
+			    <div class="col-xs-6 col-sm-6 col-md-6">
+			        <label class="control-label">Tercial node</label>
+			        <select class="form-control" autofocus ng-model="selectedNodes.trc" ng-options="node.label for node in nodes | orderBy:'label'"  ng-disabled="scheme.lock || selectedSectionType.value != 'transformerW3'"><option value="">-- choose node --</option></select>
+			    </div>
+		    </div>
+		    
+        </div>
+    </div>
+</div>
+
+<div class="col-md-6">
+    <div class="panel panel-default">
+        <div class="panel-heading">Calculations</div>
+        <div class="panel-body">
+	        <div class="col-xs-12 col-sm-12 col-md-12">
+			    <div class="col-xs-6 col-sm-6 col-md-6">Active losses</div>
+		      	<div class="col-xs-6 col-sm-6 col-md-6"><b>{{ section.calc.losses.active }}</b></div>
+		    </div>
+		    <div class="col-xs-12 col-sm-12 col-md-12">
+			    <div class="col-xs-6 col-sm-6 col-md-6">Reactive losses</div>
+		      	<div class="col-xs-6 col-sm-6 col-md-6"><b>{{ section.calc.losses.reactive }}</b></div>
+		    </div>
+		    <div class="col-xs-12 col-sm-12 col-md-12">
+			    <div class="col-xs-6 col-sm-6 col-md-6">Current phase (dst)</div>
+		      	<div class="col-xs-6 col-sm-6 col-md-6"><b>{{ section.calc.current.dst.phase }}</b></div>
+		    </div>
+		    <div class="col-xs-12 col-sm-12 col-md-12">
+			    <div class="col-xs-6 col-sm-6 col-md-6">Current ratio (dst)</div>
+		      	<div class="col-xs-6 col-sm-6 col-md-6"><b>{{ section.calc.current.dst.ratio }}</b></div>
+		    </div>
+		    <div class="col-xs-12 col-sm-12 col-md-12">
+			    <div class="col-xs-6 col-sm-6 col-md-6">Current value (dst)&nbsp;<i class="fa fa-calculator"></i></div>
+		      	<div class="col-xs-6 col-sm-6 col-md-6"><b>{{ section.calc.current.dst.value }} A</b></div>
+		    </div>
+		    <div class="col-xs-12 col-sm-12 col-md-12">
+			    <div class="col-xs-6 col-sm-6 col-md-6">Current phase (src)</div>
+		      	<div class="col-xs-6 col-sm-6 col-md-6"><b>{{ section.calc.current.src.phase }}</b></div>
+		    </div>
+		    <div class="col-xs-12 col-sm-12 col-md-12">
+			    <div class="col-xs-6 col-sm-6 col-md-6">Current ratio (src)</div>
+		      	<div class="col-xs-6 col-sm-6 col-md-6"><b>{{ section.calc.current.src.ratio }}</b></div>
+		    </div>
+		    <div class="col-xs-12 col-sm-12 col-md-12">
+			    <div class="col-xs-6 col-sm-6 col-md-6">Current value (src)&nbsp;<i class="fa fa-calculator"></i></div>
+		      	<div class="col-xs-6 col-sm-6 col-md-6"><b>{{ section.calc.current.src.value }} A</b></div>
+		    </div>
+		    <div class="col-xs-12 col-sm-12 col-md-12">
+			    <div class="col-xs-6 col-sm-6 col-md-6">Active power (dst)</div>
+		      	<div class="col-xs-6 col-sm-6 col-md-6"><b>{{ section.calc.power.dst.active }}</b></div>
+		    </div>
+		    <div class="col-xs-12 col-sm-12 col-md-12">
+			    <div class="col-xs-6 col-sm-6 col-md-6">Reactive power (dst)</div>
+		      	<div class="col-xs-6 col-sm-6 col-md-6"><b>{{ section.calc.power.dst.reactive }}</b></div>
+		    </div>
+		    <div class="col-xs-12 col-sm-12 col-md-12">
+			    <div class="col-xs-6 col-sm-6 col-md-6">Active power (src)</div>
+		      	<div class="col-xs-6 col-sm-6 col-md-6"><b>{{ section.calc.power.src.active }}</b></div>
+		    </div>
+		    <div class="col-xs-12 col-sm-12 col-md-12">
+			    <div class="col-xs-6 col-sm-6 col-md-6">Reactive power (src)</div>
+		      	<div class="col-xs-6 col-sm-6 col-md-6"><b>{{ section.calc.power.src.reactive }}</b></div>
+		    </div>
+		    <div class="col-xs-12 col-sm-12 col-md-12">
+			    <div class="col-xs-6 col-sm-6 col-md-6">Result</div>
+		      	<div class="col-xs-6 col-sm-6 col-md-6"><span class="label label-success" ng-if="section.result == 'ok'"><i class="fa fa-check-circle"></i></span><span class="label label-danger" ng-if="section.result == 'fault'"><i class="fa fa-exclamation-circle"></i></span></div>
+		    </div>
+        </div>
+    </div>
+</div>
+
+<div class="col-md-6">
+    <div class="panel panel-default">
+        <div class="panel-heading">Specification / Power</div>
+        <div class="panel-body">
+            
+            <div class="row">
+			    <div class="col-xs-6 col-sm-6 col-md-6">
+			        <div class="form-group" ng-class="(!scheme.lock && (selectedSectionType.value == 'transformer' || selectedSectionType.value == 'transformerW3')) ? (sectionForm.scPowerRatedAb.$valid ? 'has-success' : 'has-error') : ''">
+				        <label class="control-label" for="scPowerRatedAb">Rated A-B</label>
+				        <input type="text" id="scPowerRatedAb" name="scPowerRatedAb" value="" class="form-control" placeholder="Rated A-B" ng-model="section.spec.power.rated.ab" ng-pattern="/(^[+-]?\d*\.\d+$)|(^[+-]?\d+$)/" ng-disabled="scheme.lock || (selectedSectionType.value != 'transformer' && selectedSectionType.value != 'transformerW3')" autofocus />
+			        </div>
+			    </div>
+		      	<div class="col-xs-6 col-sm-6 col-md-6">
+		            <div class="form-group" ng-class="(!scheme.lock && selectedSectionType.value == 'transformerW3') ? (sectionForm.scPowerRatedAc.$valid ? 'has-success' : 'has-error') : ''">
+				        <label class="control-label" for="scPowerRatedAc">Rated A-C</label>
+				        <input type="text" id="scPowerRatedAc" name="scPowerRatedAc" value="" class="form-control" placeholder="Rated A-C" ng-model="section.spec.power.rated.ac" ng-pattern="/(^[+-]?\d*\.\d+$)|(^[+-]?\d+$)/" ng-disabled="scheme.lock || selectedSectionType.value != 'transformerW3'" autofocus />
+			        </div>
+		      	</div>
+		    </div>
+            
+            <div class="row">
+			    <div class="col-xs-6 col-sm-6 col-md-6">
+			        <div class="form-group" ng-class="(!scheme.lock && selectedSectionType.value == 'transformerW3') ? (sectionForm.scPowerRatedBc.$valid ? 'has-success' : 'has-error') : ''">
+				        <label class="control-label" for="scPowerRatedBc">Rated B-C</label>
+				        <input type="text" id="scPowerRatedBc" name="scPowerRatedBc" value="" class="form-control" placeholder="Rated B-C" ng-model="section.spec.power.rated.bc" ng-pattern="/(^[+-]?\d*\.\d+$)|(^[+-]?\d+$)/" ng-disabled="scheme.lock || selectedSectionType.value != 'transformerW3'" autofocus />
+			        </div>
+			    </div>
+		    </div>
+		    
+        </div>
+    </div>
+</div>
+
+<div class="col-md-6">
+    <div class="panel panel-default">
+        <div class="panel-heading">Specification / Losses</div>
+        <div class="panel-body">
+            
+            <div class="row">
+			    <div class="col-xs-6 col-sm-6 col-md-6">
+			        <div class="form-group" ng-class="(!scheme.lock && (selectedSectionType.value == 'transformer' || selectedSectionType.value == 'transformerW3')) ? (sectionForm.scLossesNoLoad.$valid ? 'has-success' : 'has-error') : ''">
+				        <label class="control-label" for="scLossesNoLoad">No load</label>
+				        <input type="text" id="scLossesNoLoad" name="scLossesNoLoad" value="" class="form-control" placeholder="No load" ng-model="section.spec.losses.noLoad" ng-pattern="/(^[+-]?\d*\.\d+$)|(^[+-]?\d+$)/" ng-disabled="scheme.lock || (selectedSectionType.value != 'transformer' && selectedSectionType.value != 'transformerW3')" autofocus />
+			        </div>
+			    </div>
+		      	<div class="col-xs-6 col-sm-6 col-md-6">
+		            <div class="form-group" ng-class="(!scheme.lock && (selectedSectionType.value == 'transformer' || selectedSectionType.value == 'transformerW3')) ? (sectionForm.scLossesShortAb.$valid ? 'has-success' : 'has-error') : ''">
+				        <label class="control-label" for="scLossesShortAb">Short A-B</label>
+				        <input type="text" id="scLossesShortAb" name="scLossesShortAb" value="" class="form-control" placeholder="Short A-B" ng-model="section.spec.losses.short.ab" ng-pattern="/(^[+-]?\d*\.\d+$)|(^[+-]?\d+$)/" ng-disabled="scheme.lock || (selectedSectionType.value != 'transformer' && selectedSectionType.value != 'transformerW3')" autofocus />
+			        </div>
+		      	</div>
+		    </div>
+		    
+		    <div class="row">
+			    <div class="col-xs-6 col-sm-6 col-md-6">
+			        <div class="form-group" ng-class="(!scheme.lock && (selectedSectionType.value == 'transformerW3')) ? (sectionForm.scLossesShortAc.$valid ? 'has-success' : 'has-error') : ''">
+				        <label class="control-label" for="scLossesShortAc">Short A-C</label>
+				        <input type="text" id="scLossesShortAc" name="scLossesShortAc" value="" class="form-control" placeholder="Short A-A" ng-model="section.spec.losses.short.ac" ng-pattern="/(^[+-]?\d*\.\d+$)|(^[+-]?\d+$)/" ng-disabled="scheme.lock || (selectedSectionType.value != 'transformerW3')" autofocus />
+			        </div>
+			    </div>
+		      	<div class="col-xs-6 col-sm-6 col-md-6">
+		            <div class="form-group" ng-class="(!scheme.lock && (selectedSectionType.value == 'transformerW3')) ? (sectionForm.scLossesShortBc.$valid ? 'has-success' : 'has-error') : ''">
+				        <label class="control-label" for="scLossesShortBc">Short B-C</label>
+				        <input type="text" id="scLossesShortBc" name="scLossesShortBc" value="" class="form-control" placeholder="Short B-C" ng-model="section.spec.losses.short.bc" ng-pattern="/(^[+-]?\d*\.\d+$)|(^[+-]?\d+$)/" ng-disabled="scheme.lock || (selectedSectionType.value != 'transformerW3')" autofocus />
+			        </div>
+		      	</div>
+		    </div>
+        </div>
+    </div>
+</div>
+
+<div class="col-md-6">
+    <div class="panel panel-default">
+        <div class="panel-heading">Specification / Voltage</div>
+        <div class="panel-body">
+            
+            <div class="row">
+			    <div class="col-xs-6 col-sm-6 col-md-6">
+			        <div class="form-group" ng-class="(!scheme.lock && (selectedSectionType.value == 'transformer' || selectedSectionType.value == 'transformerW3')) ? (sectionForm.scVoltagePriActual.$valid ? 'has-success' : 'has-error') : ''">
+				        <label class="control-label" for="scVoltagePriActual">Actual (primary)</label>
+				        <input type="text" id="scVoltagePriActual" name="scVoltagePriActual" value="" class="form-control" placeholder="Actual (primary)" ng-model="section.spec.voltage.pri.actual" ng-pattern="/(^[+-]?\d*\.\d+$)|(^[+-]?\d+$)/" ng-disabled="scheme.lock || (selectedSectionType.value != 'transformer' && selectedSectionType.value != 'transformerW3')" autofocus />
+			        </div>
+			    </div>
+		      	<div class="col-xs-6 col-sm-6 col-md-6">
+		            <div class="form-group" ng-class="(!scheme.lock && (selectedSectionType.value == 'transformer' || selectedSectionType.value == 'transformerW3')) ? (sectionForm.scVoltagePriRated.$valid ? 'has-success' : 'has-error') : ''">
+				        <label class="control-label" for="scVoltagePriRated">Rated (primary)</label>
+				        <input type="text" id="scVoltagePriRated" name="scVoltagePriRated" value="" class="form-control" placeholder="Rated (primary)" ng-model="section.spec.voltage.pri.rated" ng-pattern="/(^[+-]?\d*\.\d+$)|(^[+-]?\d+$)/" ng-disabled="scheme.lock || (selectedSectionType.value != 'transformer' && selectedSectionType.value != 'transformerW3')" autofocus />
+			        </div>
+		      	</div>
+		    </div>
+            
+            <div class="row">
+			    <div class="col-xs-6 col-sm-6 col-md-6">
+			        <div class="form-group" ng-class="(!scheme.lock && (selectedSectionType.value == 'transformer' || selectedSectionType.value == 'transformerW3')) ? (sectionForm.scVoltageSecActual.$valid ? 'has-success' : 'has-error') : ''">
+				        <label class="control-label" for="scVoltageSecActual">Actual (secondary)</label>
+				        <input type="text" id="scVoltageSecActual" name="scVoltageSecActual" value="" class="form-control" placeholder="Actual (secondary)" ng-model="section.spec.voltage.sec.actual" ng-pattern="/(^[+-]?\d*\.\d+$)|(^[+-]?\d+$)/" ng-disabled="scheme.lock || (selectedSectionType.value != 'transformer' && selectedSectionType.value != 'transformerW3')" autofocus />
+			        </div>
+			    </div>
+		      	<div class="col-xs-6 col-sm-6 col-md-6">
+		            <div class="form-group" ng-class="(!scheme.lock && (selectedSectionType.value == 'transformer' || selectedSectionType.value == 'transformerW3')) ? (sectionForm.scVoltageSecRated.$valid ? 'has-success' : 'has-error') : ''">
+				        <label class="control-label" for="scVoltageSecRated">Rated (secondary)</label>
+				        <input type="text" id="scVoltageSecRated" name="scVoltageSecRated" value="" class="form-control" placeholder="Rated (secondary)" ng-model="section.spec.voltage.sec.rated" ng-pattern="/(^[+-]?\d*\.\d+$)|(^[+-]?\d+$)/" ng-disabled="scheme.lock || (selectedSectionType.value != 'transformer' && selectedSectionType.value != 'transformerW3')" autofocus />
+			        </div>
+		      	</div>
+		    </div>
+		    
+		    <div class="row">
+			    <div class="col-xs-6 col-sm-6 col-md-6">
+			        <div class="form-group" ng-class="(!scheme.lock && (selectedSectionType.value == 'transformerW3')) ? (sectionForm.scVoltageTrcActual.$valid ? 'has-success' : 'has-error') : ''">
+				        <label class="control-label" for="scVoltageTrcActual">Actual (tercial)</label>
+				        <input type="text" id="scVoltageTrcActual" name="scVoltageTrcActual" value="" class="form-control" placeholder="Actual (tercial)" ng-model="section.spec.voltage.trc.actual" ng-pattern="/(^[+-]?\d*\.\d+$)|(^[+-]?\d+$)/" ng-disabled="scheme.lock || (selectedSectionType.value != 'transformerW3')" autofocus />
+			        </div>
+			    </div>
+		      	<div class="col-xs-6 col-sm-6 col-md-6">
+		            <div class="form-group" ng-class="(!scheme.lock && (selectedSectionType.value == 'transformerW3')) ? (sectionForm.scVoltageTrcRated.$valid ? 'has-success' : 'has-error') : ''">
+				        <label class="control-label" for="scVoltageTrcRated">Rated (tercial)</label>
+				        <input type="text" id="scVoltageTrcRated" name="scVoltageTrcRated" value="" class="form-control" placeholder="Rated (tercial)" ng-model="section.spec.voltage.trc.rated" ng-pattern="/(^[+-]?\d*\.\d+$)|(^[+-]?\d+$)/" ng-disabled="scheme.lock || (selectedSectionType.value != 'transformerW3')" autofocus />
+			        </div>
+		      	</div>
+		    </div>
+		    
+		    <div class="row">
+			    <div class="col-xs-6 col-sm-6 col-md-6">
+			        <div class="form-group" ng-class="(!scheme.lock && (selectedSectionType.value == 'transformer' || selectedSectionType.value == 'transformerW3')) ? (sectionForm.scVoltageShortAb.$valid ? 'has-success' : 'has-error') : ''">
+				        <label class="control-label" for="scVoltageShortAb">Short A-B</label>
+				        <input type="text" id="scVoltageShortAb" name="scVoltageShortAb" value="" class="form-control" placeholder="Short A-B" ng-model="section.spec.voltage.short.ab" ng-pattern="/(^[+-]?\d*\.\d+$)|(^[+-]?\d+$)/" ng-disabled="scheme.lock || (selectedSectionType.value != 'transformer' && selectedSectionType.value != 'transformerW3')" autofocus />
+			        </div>
+			    </div>
+		      	<div class="col-xs-6 col-sm-6 col-md-6">
+		            <div class="form-group" ng-class="(!scheme.lock && (selectedSectionType.value == 'transformerW3')) ? (sectionForm.scVoltageShortAc.$valid ? 'has-success' : 'has-error') : ''">
+				        <label class="control-label" for="scVoltageShortAc">Short A-C</label>
+				        <input type="text" id="scVoltageShortAc" name="scVoltageShortAc" value="" class="form-control" placeholder="Short A-C" ng-model="section.spec.voltage.short.ac" ng-pattern="/(^[+-]?\d*\.\d+$)|(^[+-]?\d+$)/" ng-disabled="scheme.lock || (selectedSectionType.value != 'transformerW3')" autofocus />
+			        </div>
+		      	</div>
+		    </div>
+		    
+		    <div class="row">
+		      	<div class="col-xs-6 col-sm-6 col-md-6">
+		            <div class="form-group" ng-class="(!scheme.lock && (selectedSectionType.value == 'transformerW3')) ? (sectionForm.scVoltageShortBc.$valid ? 'has-success' : 'has-error') : ''">
+				        <label class="control-label" for="scVoltageShortBc">Short B-C</label>
+				        <input type="text" id="scVoltageShortBc" name="scVoltageShortBc" value="" class="form-control" placeholder="Short B-C" ng-model="section.spec.voltage.short.bc" ng-pattern="/(^[+-]?\d*\.\d+$)|(^[+-]?\d+$)/" ng-disabled="scheme.lock || (selectedSectionType.value != 'transformerW3')" autofocus />
+			        </div>
+		      	</div>
+		    </div>
+		    
+        </div>
+    </div>
+</div>
+
+<div class="col-md-6">
+    <div class="panel panel-default">
+        <div class="panel-heading">Specification / Current</div>
+        <div class="panel-body">
+            
+            <div class="row">
+			    <div class="col-xs-6 col-sm-6 col-md-6">
+			        <div class="form-group" ng-class="(!scheme.lock) ? (sectionForm.scCurrentMax.$valid ? 'has-success' : 'has-error') : ''">
+				        <label class="control-label" for="scCurrentMax">Max&nbsp;<i class="fa fa-calculator"></i></label>
+				        <input type="text" id="scCurrentMax" name="scCurrentMax" value="" class="form-control" placeholder="Max" ng-model="section.spec.current.max" ng-pattern="/(^[+-]?\d*\.\d+$)|(^[+-]?\d+$)/" ng-disabled="scheme.lock" autofocus />
+			        </div>
+			    </div>
+		      	<div class="col-xs-6 col-sm-6 col-md-6">
+		            <div class="form-group" ng-class="(!scheme.lock && (selectedSectionType.value == 'transformer' || selectedSectionType.value == 'transformerW3')) ? (sectionForm.scCurrentNoLoad.$valid ? 'has-success' : 'has-error') : ''">
+				        <label class="control-label" for="scCurrentNoLoad">No load</label>
+				        <input type="text" id="scCurrentNoLoad" name="scCurrentNoLoad" value="" class="form-control" placeholder="No load" ng-model="section.spec.current.noLoad" ng-pattern="/(^[+-]?\d*\.\d+$)|(^[+-]?\d+$)/" ng-disabled="scheme.lock || (selectedSectionType.value != 'transformer' && selectedSectionType.value != 'transformerW3')" autofocus />
+			        </div>
+		      	</div>
+		    </div>
+        </div>
+    </div>
+</div>
+
+<div class="col-md-6">
+    <div class="panel panel-default">
+        <div class="panel-heading">Specification / Resistance</div>
+        <div class="panel-body">
+            
+            <div class="row">
+			    <div class="col-xs-6 col-sm-6 col-md-6">
+			        <div class="form-group" ng-class="(!scheme.lock && (selectedSectionType.value != 'switch')) ? (sectionForm.scResistanceRatio.$valid ? 'has-success' : 'has-error') : ''">
+				        <label class="control-label" for="scResistanceRatio">Ratio</label>
+				        <input type="text" id="scResistanceRatio" name="scResistanceRatio" value="" class="form-control" placeholder="Ratio" ng-model="section.spec.resistance.ratio" ng-pattern="/(^[+-]?\d*\.\d+$)|(^[+-]?\d+$)/" ng-disabled="scheme.lock || selectedSectionType.value == 'switch'" autofocus />
+			        </div>
+			    </div>
+		      	<div class="col-xs-6 col-sm-6 col-md-6">
+		            <div class="form-group" ng-class="(!scheme.lock && (selectedSectionType.value != 'switch')) ? (sectionForm.scResistanceValue.$valid ? 'has-success' : 'has-error') : ''">
+				        <label class="control-label" for="scResistanceValue">Value</label>
+				        <input type="text" id="scResistanceValue" name="scResistanceValue" value="" class="form-control" placeholder="Value" ng-model="section.spec.resistance.value" ng-pattern="/(^[+-]?\d*\.\d+$)|(^[+-]?\d+$)/" ng-disabled="scheme.lock || selectedSectionType.value == 'switch'" autofocus />
+			        </div>
+		      	</div>
+		    </div>
+        </div>
+    </div>
+</div>
+
+<div class="col-md-6">
+    <div class="panel panel-default">
+        <div class="panel-heading">Specification / Reactance</div>
+        <div class="panel-body">
+            
+            <div class="row">
+			    <div class="col-xs-6 col-sm-6 col-md-6">
+			        <div class="form-group" ng-class="(!scheme.lock && (selectedSectionType.value != 'switch')) ? (sectionForm.scReactanceRatio.$valid ? 'has-success' : 'has-error') : ''">
+				        <label class="control-label" for="scReactanceRatio">Ratio</label>
+				        <input type="text" id="scReactanceRatio" name="scReactanceRatio" value="" class="form-control" placeholder="Ratio" ng-model="section.spec.reactance.ratio" ng-pattern="/(^[+-]?\d*\.\d+$)|(^[+-]?\d+$)/" ng-disabled="scheme.lock || selectedSectionType.value == 'switch'" autofocus />
+			        </div>
+			    </div>
+		      	<div class="col-xs-6 col-sm-6 col-md-6">
+		            <div class="form-group" ng-class="(!scheme.lock && (selectedSectionType.value != 'switch')) ? (sectionForm.scReactanceValue.$valid ? 'has-success' : 'has-error') : ''">
+				        <label class="control-label" for="scReactanceValue">Value</label>
+				        <input type="text" id="scReactanceValue" name="scReactanceValue" value="" class="form-control" placeholder="Value" ng-model="section.spec.reactance.value" ng-pattern="/(^[+-]?\d*\.\d+$)|(^[+-]?\d+$)/" ng-disabled="scheme.lock || selectedSectionType.value == 'switch'" autofocus />
+			        </div>
+		      	</div>
+		    </div>
+        </div>
+    </div>
+</div>
+
+<div class="col-md-6">
+    <div class="panel panel-default">
+        <div class="panel-heading">Specification / Others</div>
+        <div class="panel-body">
+            
+            <div class="row">
+			    <div class="col-xs-6 col-sm-6 col-md-6">
+			        <div class="form-group" ng-class="(!scheme.lock && (selectedSectionType.value == 'line')) ? (sectionForm.scSusceptance.$valid ? 'has-success' : 'has-error') : ''">
+				        <label class="control-label" for="scSusceptance">Capacitive susceptance</label>
+				        <input type="text" id="scSusceptance" name="scSusceptance" value="" class="form-control" placeholder="Capacitive susceptance" ng-model="section.spec.susceptance" ng-pattern="/(^[+-]?\d*\.\d+$)|(^[+-]?\d+$)/" ng-disabled="scheme.lock || selectedSectionType.value != 'line'" autofocus />
+			        </div>
+			    </div>
+		      	<div class="col-xs-6 col-sm-6 col-md-6">
+		            <div class="form-group" ng-class="(!scheme.lock && (selectedSectionType.value == 'line')) ? (sectionForm.scConductance.$valid ? 'has-success' : 'has-error') : ''">
+				        <label class="control-label" for="scConductance">Conductance</label>
+				        <input type="text" id="scConductance" name="scConductance" value="" class="form-control" placeholder="Conductance" ng-model="section.spec.conductance" ng-pattern="/(^[+-]?\d*\.\d+$)|(^[+-]?\d+$)/" ng-disabled="scheme.lock || selectedSectionType.value != 'line'" autofocus />
+			        </div>
+		      	</div>
+		    </div>
+		    
+		    <div class="row">
+			    <div class="col-xs-6 col-sm-6 col-md-6">
+			        <label class="control-label" for="schemeLock">
+					    Status ON
+					    <input type="checkbox" ng-model="section.spec.status" name="scStatus" ng-pattern="/^(true|false)$/" ng-disabled="scheme.lock || selectedSectionType.value != 'switch'">
+					</label>
+			    </div>
+		    </div>
+		    
+        </div>
+    </div>
+</div>
+
+
+
+
+<div class="col-md-12" style="padding-bottom:50px">
+    <a href="" class="btn btn-default  pull-left" ng-click="cancel()"><i class="fa fa-times"></i>&nbsp;&nbsp;Cancel</a>
+    <button type="submit" class="btn btn-primary pull-right" ng-disabled="!(sectionForm.$valid && !scheme.lock)"><i class="fa fa-arrow-circle-right"></i>&nbsp;Send</button>
+</div>
+</form>
