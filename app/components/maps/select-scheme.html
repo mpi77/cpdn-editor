@@ -1,0 +1,21 @@
+<h2 class="cpdn-heading">
+	<div class="btn-group left" role="group">
+		<button type="button" class="btn btn-default" ng-click="back()">
+			<i class="fa fa-chevron-left"></i>
+		</button>
+	</div>
+	Select scheme
+</h2>
+<div class="row">
+<div class="col-md-4"></div>
+<div class="col-md-4">
+	<form class="form-message" role="form" ng-submit="viewScheme()">
+        <select class="form-control" required autofocus ng-model="selectedScheme" ng-options="scheme.name for scheme in schemes | orderBy:'name'">
+            <option value="">-- choose scheme --</option>
+        </select>
+        <div>&nbsp;</div>
+	    <button class="btn btn-lg btn-primary btn-block" type="submit">View schematic map</button>
+    </form>
+</div>
+<div class="col-md-4"></div>
+</div>
