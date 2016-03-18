@@ -1,1 +1,2 @@
-# cpdn-editor
+# CPDN Editor
+Editor is part of CPDN platform. It is RESTful client side application running as web GUI to manage data of power distribution network and calculations of steady state network problem. It is written in AngularJS (1.5) with cooperation of node.js, jQuery, Bootstrap, Babel, Bower and Webpack.
