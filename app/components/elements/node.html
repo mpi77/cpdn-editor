@@ -72,27 +72,27 @@
         <div class="panel-body">
 	        <div class="col-xs-12 col-sm-12 col-md-12">
 			    <div class="col-xs-6 col-sm-4 col-md-4">Active load</div>
-		      	<div class="col-xs-6 col-sm-8 col-md-8"><b>{{ node.calc.load.active }}</b></div>
+		      	<div class="col-xs-6 col-sm-8 col-md-8"><b>{{ node.calc.load.active }}&nbsp;kW</b></div>
 		    </div>
 		    <div class="col-xs-12 col-sm-12 col-md-12">
 			    <div class="col-xs-6 col-sm-4 col-md-4">Reactive load</div>
-		      	<div class="col-xs-6 col-sm-8 col-md-8"><b>{{ node.calc.load.reactive }}</b></div>
+		      	<div class="col-xs-6 col-sm-8 col-md-8"><b>{{ node.calc.load.reactive }}&nbsp;kVAr</b></div>
 		    </div>
 		    <div class="col-xs-12 col-sm-12 col-md-12">
 			    <div class="col-xs-6 col-sm-4 col-md-4">Voltage drop</div>
-		      	<div class="col-xs-6 col-sm-8 col-md-8"><b>{{ node.calc.voltage.dropKv }} kV</b></div>
+		      	<div class="col-xs-6 col-sm-8 col-md-8"><b>{{ node.calc.voltage.dropKv }}&nbsp;kV</b></div>
 		    </div>
 		    <div class="col-xs-12 col-sm-12 col-md-12">
 			    <div class="col-xs-6 col-sm-4 col-md-4">Voltage drop</div>
-		      	<div class="col-xs-6 col-sm-8 col-md-8"><b>{{ node.calc.voltage.dropKv }} %</b></div>
+		      	<div class="col-xs-6 col-sm-8 col-md-8"><b>{{ node.calc.voltage.dropKv }}&nbsp;%</b></div>
 		    </div>
 		    <div class="col-xs-12 col-sm-12 col-md-12">
 			    <div class="col-xs-6 col-sm-4 col-md-4">Voltage phase</div>
-		      	<div class="col-xs-6 col-sm-8 col-md-8"><b>{{ node.calc.voltage.phase }}</b></div>
+		      	<div class="col-xs-6 col-sm-8 col-md-8"><b>{{ node.calc.voltage.phase }}&nbsp;°</b></div>
 		    </div>
 		    <div class="col-xs-12 col-sm-12 col-md-12">
 			    <div class="col-xs-6 col-sm-4 col-md-4">Voltage value&nbsp;<i class="fa fa-calculator"></i></div>
-		      	<div class="col-xs-6 col-sm-8 col-md-8"><b>{{ node.calc.voltage.value }} V</b></div>
+		      	<div class="col-xs-6 col-sm-8 col-md-8"><b>{{ node.calc.voltage.value }}&nbsp;kV</b></div>
 		    </div>
 		    <div class="col-xs-12 col-sm-12 col-md-12">
 			    <div class="col-xs-6 col-sm-4 col-md-4">Result</div>
@@ -110,13 +110,13 @@
             <div class="row">
 			    <div class="col-xs-6 col-sm-6 col-md-6">
 			        <div class="form-group" ng-class="(!scheme.lock) ? (nodeForm.nodePowerActive.$valid ? 'has-success' : 'has-error') : ''">
-				        <label class="control-label" for="nodePowerActive">Active</label>
+				        <label class="control-label" for="nodePowerActive">Active&nbsp;[kW]</label>
 				        <input type="text" id="nodePowerActive" name="nodePowerActive" value="" class="form-control" placeholder="Active power" ng-model="node.spec.power.active" ng-pattern="/(^[+-]?\d*\.\d+$)|(^[+-]?\d+$)/" ng-disabled="scheme.lock" autofocus />
 			        </div>
 			    </div>
 		      	<div class="col-xs-6 col-sm-6 col-md-6">
 		            <div class="form-group" ng-class="(!scheme.lock) ? (nodeForm.nodePowerReactive.$valid ? 'has-success' : 'has-error') : ''">
-				        <label class="control-label" for="nodePowerReactive">Reactive</label>
+				        <label class="control-label" for="nodePowerReactive">Reactive&nbsp;[kVAr]</label>
 				        <input type="text" id="nodePowerReactive" name="nodePowerReactive" value="" class="form-control" placeholder="Reactive power" ng-model="node.spec.power.reactive" ng-pattern="/(^[+-]?\d*\.\d+$)|(^[+-]?\d+$)/" ng-disabled="scheme.lock" autofocus />
 			        </div>
 		      	</div>
@@ -125,13 +125,13 @@
             <div class="row">
 			    <div class="col-xs-6 col-sm-6 col-md-6">
 			        <div class="form-group" ng-class="(!scheme.lock && (selectedNodeType.value == 'turbogen' || selectedNodeType.value == 'hydrogen')) ? (nodeForm.nodePowerRated.$valid ? 'has-success' : 'has-error') : ''">
-				        <label class="control-label" for="nodePowerRated">Rated</label>
+				        <label class="control-label" for="nodePowerRated">Rated&nbsp;[kVA]</label>
 				        <input type="text" id="nodePowerRated" name="nodePowerRated" value="" class="form-control" placeholder="Rated power" ng-model="node.spec.power.rated" ng-pattern="/(^[+-]?\d*\.\d+$)|(^[+-]?\d+$)/" ng-disabled="scheme.lock || (selectedNodeType.value != 'turbogen' && selectedNodeType.value != 'hydrogen')" autofocus />
 			        </div>
 			    </div>
 		      	<div class="col-xs-6 col-sm-6 col-md-6">
 		            <div class="form-group" ng-class="(!scheme.lock && selectedNodeType.value == 'consumption') ? (nodeForm.nodePowerInstalled.$valid ? 'has-success' : 'has-error') : ''">
-				        <label class="control-label" for="nodePowerInstalled">Installed</label>
+				        <label class="control-label" for="nodePowerInstalled">Installed&nbsp;[kVA]</label>
 				        <input type="text" id="nodePowerInstalled" name="nodePowerInstalled" value="" class="form-control" placeholder="Installed power" ng-model="node.spec.power.installed" ng-pattern="/(^[+-]?\d*\.\d+$)|(^[+-]?\d+$)/" ng-disabled="scheme.lock || selectedNodeType.value != 'consumption'" autofocus />
 			        </div>
 		      	</div>
@@ -149,13 +149,13 @@
             <div class="row">
 			    <div class="col-xs-6 col-sm-6 col-md-6">
 			        <div class="form-group" ng-class="(!scheme.lock) ? (nodeForm.nodeVoltageLevel.$valid ? 'has-success' : 'has-error') : ''">
-				        <label class="control-label" for="nodeVoltageLevel">Level&nbsp;<i class="fa fa-calculator"></i></label>
+				        <label class="control-label" for="nodeVoltageLevel">Level&nbsp;[kV]&nbsp;<i class="fa fa-calculator"></i></label>
 				        <input type="text" id="nodeVoltageLevel" name="nodeVoltageLevel" value="" class="form-control" placeholder="Voltage level" ng-model="node.spec.voltage.level" ng-pattern="/(^[+-]?\d*\.\d+$)|(^[+-]?\d+$)/" ng-disabled="scheme.lock" autofocus />
 			        </div>
 			    </div>
 		      	<div class="col-xs-6 col-sm-6 col-md-6">
 		            <div class="form-group" ng-class="(!scheme.lock && selectedNodeType.value == 'power') ? (nodeForm.nodeVoltagePhase.$valid ? 'has-success' : 'has-error') : ''">
-				        <label class="control-label" for="nodeVoltagePhase">Phase</label>
+				        <label class="control-label" for="nodeVoltagePhase">Phase&nbsp;[°]</label>
 				        <input type="text" id="nodeVoltagePhase" name="nodeVoltagePhase" value="" class="form-control" placeholder="Voltage phase" ng-model="node.spec.voltage.phase" ng-pattern="/(^[+-]?\d*\.\d+$)|(^[+-]?\d+$)/" ng-disabled="scheme.lock || selectedNodeType.value != 'power'" autofocus />
 			        </div>
 		      	</div>
@@ -164,13 +164,13 @@
             <div class="row">
 			    <div class="col-xs-6 col-sm-6 col-md-6">
 			        <div class="form-group" ng-class="(!scheme.lock && (selectedNodeType.value == 'turbogen' || selectedNodeType.value == 'hydrogen' || selectedNodeType.value == 'superiorSystem')) ? (nodeForm.nodeVoltageRated.$valid ? 'has-success' : 'has-error') : ''">
-				        <label class="control-label" for="nodeVoltageRated">Rated</label>
+				        <label class="control-label" for="nodeVoltageRated">Rated&nbsp;[kV]</label>
 				        <input type="text" id="nodeVoltageRated" name="nodeVoltageRated" value="" class="form-control" placeholder="Rated voltage" ng-model="node.spec.voltage.rated" ng-pattern="/(^[+-]?\d*\.\d+$)|(^[+-]?\d+$)/" ng-disabled="scheme.lock || (selectedNodeType.value != 'turbogen' && selectedNodeType.value != 'hydrogen' && selectedNodeType.value != 'superiorSystem')" autofocus />
 			        </div>
 			    </div>
 		      	<div class="col-xs-6 col-sm-6 col-md-6">
 		            <div class="form-group" ng-class="(!scheme.lock) ? (nodeForm.nodeVoltageValue.$valid ? 'has-success' : 'has-error') : ''">
-				        <label class="control-label" for="nodeVoltageValue">Value</label>
+				        <label class="control-label" for="nodeVoltageValue">Value&nbsp;[kV]</label>
 				        <input type="text" id="nodeVoltageValue" name="nodeVoltageValue" value="" class="form-control" placeholder="Voltage value" ng-model="node.spec.voltage.value" ng-pattern="/(^[+-]?\d*\.\d+$)|(^[+-]?\d+$)/" ng-disabled="scheme.lock" autofocus />
 			        </div>
 		      	</div>
@@ -227,13 +227,13 @@
             <div class="row">
 			    <div class="col-xs-6 col-sm-6 col-md-6">
 			        <div class="form-group" ng-class="(!scheme.lock && (selectedNodeType.value == 'turbogen' || selectedNodeType.value == 'hydrogen')) ? (nodeForm.nodeReactanceLongitudinal.$valid ? 'has-success' : 'has-error') : ''">
-				        <label class="control-label" for="nodeReactanceLongitudinal">Longitudinal</label>
+				        <label class="control-label" for="nodeReactanceLongitudinal">Longitudinal&nbsp;[%]</label>
 				        <input type="text" id="nodeReactanceLongitudinal" name="nodeReactanceLongitudinal" value="" class="form-control" placeholder="Longitudinal reactance" ng-model="node.spec.reactance.longitudinal" ng-disabled="scheme.lock || (selectedNodeType.value != 'turbogen' && selectedNodeType.value != 'hydrogen')" ng-pattern="/(^[+-]?\d*\.\d+$)|(^[+-]?\d+$)/" autofocus />
 			        </div>
 			    </div>
 		      	<div class="col-xs-6 col-sm-6 col-md-6">
 		            <div class="form-group" ng-class="(!scheme.lock && (selectedNodeType.value == 'turbogen' || selectedNodeType.value == 'hydrogen')) ? (nodeForm.nodeReactanceTransverse.$valid ? 'has-success' : 'has-error') : ''">
-				        <label class="control-label" for="nodeReactanceTransverse">Transverse</label>
+				        <label class="control-label" for="nodeReactanceTransverse">Transverse&nbsp;[%]</label>
 				        <input type="text" id="nodeReactanceTransverse" name="nodeReactanceTransverse" value="" class="form-control" placeholder="Transverse reactance" ng-model="node.spec.reactance.transverse" ng-disabled="scheme.lock || (selectedNodeType.value != 'turbogen' && selectedNodeType.value != 'hydrogen')" ng-pattern="/(^[+-]?\d*\.\d+$)|(^[+-]?\d+$)/" autofocus />
 			        </div>
 		      	</div>
